@@ -647,7 +647,6 @@ Generator::gen(Promote_conv const* e)
 
   else
     return v;
-  
 }
 
 

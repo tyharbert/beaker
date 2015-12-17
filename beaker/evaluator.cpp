@@ -387,33 +387,21 @@ Evaluator::eval(Block_conv const* e)
 }
 
 // Apply a promotion
-// int   -> float
 // int   -> double
-// float -> double
 Value
 Evaluator::eval(Promote_conv const* e)
 {
   const Type * t = e->target();
   Value v = eval(e->source());
 
-  if(is<Float_type>(t)) {
-    if(v.is_integer()) 
-    {
-      return new Value((float)(v.get_integer()));
-    }
-  }
-  else if(is<Double_type>(t)) {
-    if(v.is_integer()) 
-    {
+  // because value type only has doubles for all
+  // floating points and int64_t for all integer
+  // types only int -> double conversion is needed
+  if (is<Float_type>(t) || is<Double_type>(t))
+    if (v.is_integer())
       return new Value((double)(v.get_integer()));
-    }
-    if(v.is_float())
-    {
-      return new Value((double)(v.get_float()));
-    }
-  }
 
-  return new Value(v);
+  return v;
 
 }
 
